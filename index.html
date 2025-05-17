@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <title>Modelo 3D VR</title>
-    <!-- Cargamos model-viewer desde CDN -->
     <script
       type="module"
       src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
@@ -11,58 +10,57 @@
     <style>
       body {
         margin: 0;
+        overflow: hidden;
       }
+
       model-viewer {
         width: 100vw;
         height: 100vh;
       }
-      button[slot="ar-button"] {
+
+      #custom-ar-button {
         position: fixed;
-        bottom: 20px;
+        top: 20px;
         left: 50%;
         transform: translateX(-50%);
         padding: 15px 30px;
         font-size: 18px;
         font-weight: bold;
-        color: black;
-        background-color: #007aff; /* azul iOS */
+        color: white;
+        background-color: #007aff;
         border: none;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         cursor: pointer;
-        z-index: 10;
-        transition: background-color 0.3s ease;
+        z-index: 1000;
       }
     </style>
   </head>
   <body>
-    <!-- Modelo 3D con soporte AR y VR -->
+    <!-- Visor del modelo -->
     <model-viewer
+      id="viewer"
       src="ImageToStl.com_control+remote.glb"
-      ios-src="ImageToStl.com_control+remote.usdz"
+      ios-src="modelo.usdz"
       ar
-      vr
       ar-modes="scene-viewer webxr quick-look"
       camera-controls
-      tone-mapping="neutral"
-      shadow-intensity="1"
-      camera-orbit="0.7903deg 68.68deg 3.643m"
-      field-of-view="30deg"
       auto-rotate
       autoplay
+      shadow-intensity="1"
     >
-      <!-- Slot para la barra de progreso -->
-      <div class="progress-bar hide" slot="progress-bar">
-        <div class="update-bar"></div>
-      </div>
-
-      <!-- Slot para el botón AR (muy importante) -->
-      <button slot="ar-button" id="ar-button">View in your space</button>
-
-      <!-- Slot para el prompt de AR -->
-      <div id="ar-prompt" slot="ar-prompt">
-        <img src="https://modelviewer.dev/shared-assets/icons/hand.png" />
-      </div>
     </model-viewer>
+
+    <!-- Botón personalizado -->
+    <button id="custom-ar-button">Ver en tu espacio</button>
+
+    <script>
+      const modelViewer = document.getElementById("viewer");
+      const arButton = document.getElementById("custom-ar-button");
+
+      arButton.addEventListener("click", () => {
+        modelViewer.activateAR();
+      });
+    </script>
   </body>
 </html>
